@@ -1,0 +1,58 @@
+    /* ROOT DECLARATIONS DISPLAY : GRID */
+    :root {
+      /* Minimum and maximum column widths */
+      --grid-min-width: 135px; /* Default minimum width */
+      --grid-max-width: 1fr;  /* Default maximum width - though seems like this has 0 effect given the setup below */
+
+      /* Default number - increasing by 2 (thus in pairs) of columns at different breakpoints */
+      --grid-cols-default: repeat(auto-fit, minmax(var(--grid-min-width), var(--grid-max-width)));
+      --grid-cols-400: repeat(1, 1fr);
+      --grid-cols-600: repeat(1, 1fr);
+      --grid-cols-1000: repeat(1, 1fr);
+    }
+
+    .opsx-grid {
+        display: grid;
+        grid-template-columns: var(--grid-cols-default);
+    }
+
+    @media (min-width: 400px) {
+    :root {
+        --grid-cols-default: var(--grid-cols-400);
+    }
+    }
+    @media (min-width: 600px) {
+        :root {
+            --grid-cols-default: var(--grid-cols-600);
+        }
+    }
+    /* @media (min-width: 800px) {
+        :root {
+            --grid-cols-default: var(--grid-cols-800);
+        }
+    } */
+    @media (min-width: 1000px) {
+        :root {
+            --grid-cols-default: var(--grid-cols-1000);
+        }
+    }
+
+    /* in case we need justify-items and align-items, have a look at this overview before adding them 
+       https://miro.medium.com/v2/resize:fit:1080/1*y9RuktkbVshp7lmVmZrbeQ.png
+    */
+    /* Row Gaps */
+    .ggr5 { row-gap: 5px; }
+    .ggr10 { row-gap: 10px; }
+    .ggr15 { row-gap: 15px; }
+    .ggr20 { row-gap: 20px; }
+
+    /* Column Gaps */
+    .ggc5 { column-gap: 5px; }
+    .ggc10 { column-gap: 10px; }
+    .ggc15 { column-gap: 15px; }
+    .ggc20 { column-gap: 20px; }
+
+    /* Grid Auto-Flow Directions */
+    .gaf-r { grid-auto-flow: row; }
+    .gaf-c { grid-auto-flow: column; }
+    .gaf-d { grid-auto-flow: dense; }

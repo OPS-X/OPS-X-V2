@@ -1,0 +1,71 @@
+/* opsx-css-boilerplate-layout-classes */
+.g5 {
+    gap: 5px;
+}
+.g10 {
+   gap: 10px;
+}  
+.p5 {
+    padding: 5px;
+}
+.pl5 {
+    padding-left: 5px;
+}
+.pr5 {
+    padding-right: 5px;
+}
+.pt5 {
+    padding-top: 5px;
+}
+.pb5 {
+    padding-bottom: 5px;
+}
+.m5 {
+    margin: 5px;
+}
+.ml5 {
+    margin-left: 5px;
+}
+.mr5 {
+    margin-right: 5px;
+}
+.mt5 {
+    margin-top: 5px;
+}
+.mb5 {
+    margin-bottom: 5px;
+}
+.w100 {
+    width: 100%;
+}
+.wfc {
+    width: fit-content;
+}
+.box {
+box-sizing: border-box;
+}
+.d-none {
+    display: none;
+}
+.scroll {
+    scrollbar-width: none;
+    overflow: auto;
+}
+/* flex */
+.x-col {
+    flex-direction: column;
+}
+.x-spb {
+    justify-content: space-between;
+}
+.x-spa {
+    justify-content: space-around;
+}
+.x-row {
+    flex-direction: row;
+}
+
+
+
+
+
