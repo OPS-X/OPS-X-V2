@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Template</title>
+  <link href="https://fonts.googleapis.com/css2?family=Goldman&family=Inter&display=swap" rel="stylesheet">
+
+   <!-- Include CSS files -->
+    <link rel="stylesheet" href="https://raw.githubusercontent.com/OPS-X/OPS-X-V2/main/01_opsx_css_root_reset_decl_assign_main_selectors_V0.01.css">
+    <link rel="stylesheet" href="https://raw.githubusercontent.com/OPS-X/OPS-X-V2/main/01a_opsx_root_grid_layout_V0.01.css">
+    <link rel="stylesheet" href="https://raw.githubusercontent.com/OPS-X/OPS-X-V2/main/02_opsx_css_boilerplate_layout_classes_V0.01.css">
+    <link rel="stylesheet" href="https://raw.githubusercontent.com/OPS-X/OPS-X-V2/main/03_opsx_css_boilerplate_component_classes_V0.01.css">
+    <link rel="stylesheet" href="https://raw.githubusercontent.com/OPS-X/OPS-X-V2/main/04_opsx_css_boilerplate_typography_classes_V0.01.css">
+    <link rel="stylesheet" href="https://raw.githubusercontent.com/OPS-X/OPS-X-V2/main/04_opsx_css_boilerplate_typography_classes_V0.02.css">
+    <link rel="stylesheet" href="https://raw.githubusercontent.com/OPS-X/OPS-X-V2/main/05_opsx_css_boilerplate_transition_classes_V0.01.css">
+    
+  <style>
+    .p4 {
+      padding: 4px;
+  
+    }
+  </style>
+</head>
+<body>
+
+<script>
+    function toggleFormGroupSMP(groupId, displayType = 'grid') {
+      const group = document.getElementById(groupId);
+
+      if (group) {
+        const isExpanded = group.classList.contains('x-expand');
+        group.setAttribute('aria-hidden', isExpanded);
+        group.previousElementSibling.setAttribute('aria-expanded', !isExpanded);
+
+        if (isExpanded) {
+          group.classList.remove('x-expand');
+          group.classList.add('x-collapse');
+          setTimeout(() => {
+            group.style.display = 'none';
+          }, 2300);
+        } else {
+          group.style.display = displayType;
+          setTimeout(() => {
+            group.classList.remove('x-collapse');
+            group.classList.add('x-expand');
+          }, 10);
+        }
+      }
+    }
+</script>  <div class="opsx-flex x-col" id="general-form-group-flex-grid-wrap-smp">
+    <header class="opsx-header" onclick="toggleFormGroupSMP('opsx-group-general-preset-settings-smp')" aria-controls="opsx-group-general-preset-settings-smp" aria-expanded="false">General</header>
+    <form class="opsx-grid t-modern ggc5" id="opsx-group-general-preset-settings-smp" aria-hidden="true">
+      <div class="opsx-flex-item x-col">
+        <label for="preset_name_dm" class="opsx-label">Preset Name</label>
+        <select id="preset_name_dm" data-name="preset_name_dm" class="opsx-select mt5 p4 w100" required></select>
+        <input type="text" class="opsx-input mt5 w100 d-none" id="preset_name_new_dm" data-name="preset_name_new_dm" required/>
+      </div>
+      <div class="opsx-flex-item x-col">
+        <label for="preset_category_dm" class="opsx-label">Category</label>
+        <select id="preset_category_dm" data-name="preset_category_dm" data-list="preset_category_list_dm" class="opsx-select mt5 p4 w100" required></select>
+      </div>
+      <div class="opsx-flex-item x-col">
+        <label for="preset_subcategory_dm" class="opsx-label">Subcategory</label>
+        <select id="preset_subcategory_dm" name="preset_subcategory_dm" data-list="preset_subcategory_list_dm" class="opsx-select mt5 p4 w100"></select>
+      </div>
+      <div class="opsx-flex-item x-col">
+        <label for="preset_module_dm" class="opsx-label">Modules</label>
+        <select id="preset_module_dm" data-name="preset_module_dm" data-list="preset_module_list_dm" class="opsx-select mt5 p4 w100">
+          <option value="module1">Module 1</option>
+          <option value="module2">Module 2</option>
+          <option value="module3">Module 3</option>
+        </select>
+      </div>
+      <div class="opsx-flex-item x-col">
+        <label for="preset_plugin_dm" class="opsx-label">Plugins</label>
+        <select id="preset_plugin_dm" data-name="preset_plugin_dm" data-list="preset_plugin_list_dm" class="opsx-select mt5 p4 w100"></select>
+      </div>
+      <div class="opsx-flex-item x-col">
+        <label for="preset_library_dm" class="opsx-label">Libraries</label>
+        <select id="preset_library_dm" data-name="preset_library_dm" data-list="preset_library_list_dm" class="opsx-select mt5 p4 w100"></select>
+      </div>
+      <div class="opsx-flex-item x-col">
+        <label for="preset_workbook_dm" class="opsx-label">Workbook</label>
+        <input type="text" id="preset_workbook_dm" data-name="preset_workbook_dm" class="opsx-input mt5 p5 w100" required>
+      </div>
+      <div class="opsx-flex-item x-col">
+        <label for="preset_sheet_dm" class="opsx-label">Sheet</label>
+        <input type="text" id="preset_sheet_dm" data-name="preset_sheet_dm" class="opsx-input mt5 p5 w100" required>
+      </div>
+      <div class="opsx-flex-item x-col">
+        <label for="preset_sheet_id_dm" class="opsx-label">SheetID</label>
+        <input type="text" id="preset_sheet_id_dm" data-name="preset_sheet_id_dm" class="opsx-input mt5 p5 w100" required>
+      </div>
+      <div class="opsx-flex-item x-col">
+        <label for="preset_script_id_dm" class="opsx-label">ScriptID</label>
+        <select id="preset_script_id_dm" data-name="preset_script_id_dm" data-list="preset_script_id_list_dm" class="opsx-select mt5 p4 w100" required></select>
+      </div>
+      <div class="opsx-flex-item x-col">
+        <label for="preset_last_saved_dm" class="opsx-label">Last Saved</label>
+        <input type="date" id="preset_last_saved_dm" data-name="preset_last_saved_dm" class="opsx-input mt5 p4 w100" required>
+      </div>
+      <div class="opsx-flex-item x-col">
+        <label for="preset_notes_dm" class="opsx-label">Notes</label>
+        <input type="text" id="preset_notes_dm" data-name="preset_notes_dm" class="opsx-input mt5 p5 w100" required>
+    
+      </div>
+    </form>
+  </div>
+</body>
+</html>
