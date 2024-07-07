@@ -1,0 +1,62 @@
+/* STYLESHEET FOR BASELINE CSS + DECLARATION AND ASSIGNMENT OF ROOT VARIABLES FOR <HTML>, <BODY> and <MAIN> */
+
+:root {
+  /* ROOT VAR DECLARATION: HTML */
+  --html-scroll-bar-width: none;
+  --html-scroll-behaviour: smooth;
+
+  /* ROOT VAR DECLARATION : MAIN */
+  --main-border-radius: 0px;
+
+  /* ROOT VAR DECLARATION : BODY */
+  --body-bg-opacity: 1;
+  --body-bg-size: cover;
+  --body-bg-repeat: no-repeat;
+  --body-bg-blendmode: normal;
+  --body-padding: 80px 5px 150px 5px;
+  --body-bg-color: var(--third-color);
+  --body-bg: linear-gradient(360deg, var(--fourth-color) 10%, var(--second-color) 360%);
+  --body-bg-image: "";
+}
+
+/* ROOT VAR ASSIGNMENT: HTML */
+html {
+  scroll-behavior: var(--html-scroll-behaviour);
+  scrollbar-width: var(--html-scroll-bar-width);
+  font-size: var(--font-size-base);
+  font-family: var(--font-base);
+}
+
+/* ROOT VAR ASSIGNMENT: BODY */
+body {
+  font-size: var(--body-font-size);
+  color: var(--text-color);
+  opacity: var(--body-bg-opacity);
+  padding: var(--body-padding);
+  background-size: var(--body-bg-size);
+  background-repeat: var(--body-bg-repeat);
+  background-blend-mode: var(--body-bg-blendmode);
+  background-color: var(--body-bg-color);
+  background-image: var(--body-bg);
+
+
+}
+
+/* TO SET EFFECT LAYER WITHOUT AFFECTING REGULAR ELEMENTS OF THE BODY OF THE HTML */
+body::before {
+  content: "";
+  background-image: var(--body-bg-image);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: var(--body-bg-opacity);
+  mix-blend-mode: var(--body-bg-blendmode);
+  z-index: -1;
+}
+
+/* ROOT VAR ASSIGNMENT: MAIN */
+main {
+  border-radius: var(--main-border-radius);
+}

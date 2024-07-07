@@ -1,110 +1,257 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Template</title>
-  <link href="https://fonts.googleapis.com/css2?family=Goldman&family=Inter&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-   <!-- Include CSS files -->
-   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/OPS-X/OPS-X-V2@main/01_opsx_css_root_reset_decl_assign_main_selectors_V0.01.css">
-   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/OPS-X/OPS-X-V2@main/01a_opsx_root_grid_layout_V0.01.css">
-   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/OPS-X/OPS-X-V2@main/02_opsx_css_boilerplate_layout_classes_V0.01.css">
-   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/OPS-X/OPS-X-V2@main/03_opsx_css_boilerplate_component_classes_V0.01.css">
-   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/OPS-X/OPS-X-V2@main/04_opsx_css_boilerplate_typography_classes_V0.01.css">
-   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/OPS-X/OPS-X-V2@main/04_opsx_css_boilerplate_typography_classes_V0.02.css">
-   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/OPS-X/OPS-X-V2@main/05_opsx_css_boilerplate_transition_classes_V0.01.css">    
-  <style>
-    .p4 {
-      padding: 4px;
+<meta name="module" content="{{module_name}}">
+<meta name="ModuleID" content="{{module_id}}">
+<meta name="suffixElementID" content="{{module_id}}">
+<meta name="suffixFunction" content="{{MODULE_ID}}">
+<meta name="suffixConstant" content="{{MODULE_ID}}">
+
+<title>OPSX MODULE - {{module name}}</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Goldman&family=Inter:wght@400;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   
+<script id="opsx-css-loader-scr-{{module_id}}">
+const cssFiles = [
+  "01_root_css_reset",
+  "02_root_design_master_color_palette_da",
+  "02_root_design_master_element_mapping_da",
+  "03_root_elements_basic_a",
+  "03_root_elements_structural_da",
+  "04_root_layout_flex_dc",
+  "04_root_layout_grid_dc",
+  "04_root_layout_utility_c",
+  "05_root_components_c",
+  "06_root_transitions_c",
+  "06_root_transitions_d",
+  "07_root_typography_c"
+];
+        
+const pathLocal = ''; /* to enter local relative path like '../OPS-X-V2/'*/
+const pathCDN = 'https://cdn.jsdelivr.net/gh/OPS-X/OPS-X-V2@main/';
+
+function logStylesheetLoadingStart() {
+const timestamp = new Date().toLocaleTimeString('en-US', { hour12: false });
+      
+console.log(
+`OPSX-STYLESHEET LOADER 
+Process Flow:
+1. check for local stylesheets: if true = load stylesheets & exit, if false =
+2. check cache for stylesheets
+3. check cdn for stylesheets
+4. determine latest version via incremental logic
+5. compare cache version with cdn
+6. If cdn = newer version = update cache`);
+
+console.table({
+  "Start Time": timestamp,
+  "Local Path Relative": pathLocal,
+  "CDN Path": pathCDN,
+  "Total stylesheets": cssFiles.length,
+});
+}        
+
+function parseVersion(filename) {
+const match = filename.match(/_(\d{3})\.css$/);
+return match ? match[1] : '001';
+}
+
+function generateNextVersion(currentVersion) {
+return (currentVersion + 1).toString().padStart(3, '0');
+}
+
+async function loadLatestCSS(file) {
+const storageKey = `${file}_version`;
+let version = localStorage.getItem(storageKey) || '001';
+let localAvailable = false;
+let cdnLoaded = false;
+let cacheUpdated = false;
+let operationsLog = [];
+
+const localFilePath = `${pathLocal}${file}_${version}.css`;
+
+// ACTIVATE TO SEE EXACT FILENAME CHECK (LOCAL)
+//console.log(`Checking local availability for: ${localFilePath}`);
+
+// Try loading local file first
+  if (await tryLoadCSS(`${pathLocal}${file}_${version}.css`)) {
+    operationsLog.push(`${timestamp()} ${file}: Loaded local version ${version}`);
+    localAvailable = true;
+  } else {
+
+  operationsLog.push(`${timestamp()} ${file}: Local version unavailable, starting CDN fallback`);
+
+  let latestVersion = version;
+  let attempts = 0;
+
+  while (attempts < 10) {
+    try {
+      const response = await fetch(`${pathCDN}${file}_${version}.css`);
+      if (response.ok) {
+        operationsLog.push(`${timestamp()} ${file}: Successfully loaded CDN version ${version}`);
+        latestVersion = version;
+        version = generateNextVersion(parseVersion(version));
+        attempts++;
+        cdnLoaded = true;
+      } else {
+        operationsLog.push(`${timestamp()} ${file}: CDN version ${version} not found, stopping search`);
+        break;
+      }
+    } catch (error) {
+      operationsLog.push(`${timestamp()} ${file}: Error loading CDN version ${version}: ${error}`);
+      break;
     }
-  </style>
+  }
+
+  if (latestVersion !== localStorage.getItem(storageKey)) {
+    operationsLog.push(`${timestamp()} ${file}: Updating cache with new version ${latestVersion}`);
+    localStorage.setItem(storageKey, latestVersion);
+    cacheUpdated = true;
+  }
+
+  loadCSS(`${pathCDN}${file}_${latestVersion}.css`);
+  operationsLog.push(`${timestamp()} ${file}: Loaded latest CDN version ${latestVersion}`);
+}
+
+return { file, localAvailable, cdnLoaded, cacheUpdated, version: parseVersion(version).toString().padStart(3, '0'), operationsLog };
+}
+
+
+async function tryLoadCSS(url) {
+// Replace _0.01.css with _001.css in the URL
+url = url.replace(/_0\.01\.css$/, '_001.css');
+try {
+  const response = await fetch(url, { method: 'HEAD' });
+  if (response.ok) {
+    loadCSS(url);
+    return true;
+  }
+} catch (error) {
+  console.error(`${timestamp()} Error trying to load ${url}: ${error}`);
+}
+return false;
+}
+
+function loadCSS(url) {
+const link = document.createElement('link');
+link.rel = 'stylesheet';
+link.href = url;
+document.head.appendChild(link);
+}
+
+function timestamp() {
+return new Date().toLocaleTimeString('en-US', { hour12: false });
+}
+
+logStylesheetLoadingStart();
+
+// Load all CSS files and collect results
+Promise.all(cssFiles.map(loadLatestCSS))
+.then(results => {
+  console.groupCollapsed(`${timestamp()} CSS Loading Operations`);
+  results.forEach(result => {
+    console.log(`File: ${result.file}`);
+    console.log(`Operations:`);
+    result.operationsLog.forEach(log => console.log(`  ${log}`));
+    console.log('');
+  });
+  console.groupEnd();
+
+  console.table(results, ['file', 'localAvailable', 'cdnLoaded', 'cacheUpdated', 'version']);
+});
+</script> 
+
+<style id="opsx-css-{{module_section}}_{{module_id}}">
+</style>
+
 </head>
 <body>
-
-<script>
-    function toggleFormGroupSMP(groupId, displayType = 'grid') {
-      const group = document.getElementById(groupId);
-
-      if (group) {
-        const isExpanded = group.classList.contains('x-expand');
-        group.setAttribute('aria-hidden', isExpanded);
-        group.previousElementSibling.setAttribute('aria-expanded', !isExpanded);
-
-        if (isExpanded) {
-          group.classList.remove('x-expand');
-          group.classList.add('x-collapse');
-          setTimeout(() => {
-            group.style.display = 'none';
-          }, 2300);
-        } else {
-          group.style.display = displayType;
-          setTimeout(() => {
-            group.classList.remove('x-collapse');
-            group.classList.add('x-expand');
-          }, 10);
-        }
-      }
-    }
-</script>  <div class="opsx-flex x-col" id="general-form-group-flex-grid-wrap-smp">
-    <header class="opsx-header" onclick="toggleFormGroupSMP('opsx-group-general-preset-settings-smp')" aria-controls="opsx-group-general-preset-settings-smp" aria-expanded="false">General</header>
-    <form class="opsx-grid t-modern ggc5" id="opsx-group-general-preset-settings-smp" aria-hidden="true">
-      <div class="opsx-flex-item x-col">
-        <label for="preset_name_dm" class="opsx-label">Preset Name</label>
-        <select id="preset_name_dm" data-name="preset_name_dm" class="opsx-select mt5 p4 w100" required></select>
-        <input type="text" class="opsx-input mt5 w100 d-none" id="preset_name_new_dm" data-name="preset_name_new_dm" required/>
-      </div>
-      <div class="opsx-flex-item x-col">
-        <label for="preset_category_dm" class="opsx-label">Category</label>
-        <select id="preset_category_dm" data-name="preset_category_dm" data-list="preset_category_list_dm" class="opsx-select mt5 p4 w100" required></select>
-      </div>
-      <div class="opsx-flex-item x-col">
-        <label for="preset_subcategory_dm" class="opsx-label">Subcategory</label>
-        <select id="preset_subcategory_dm" name="preset_subcategory_dm" data-list="preset_subcategory_list_dm" class="opsx-select mt5 p4 w100"></select>
-      </div>
-      <div class="opsx-flex-item x-col">
-        <label for="preset_module_dm" class="opsx-label">Modules</label>
-        <select id="preset_module_dm" data-name="preset_module_dm" data-list="preset_module_list_dm" class="opsx-select mt5 p4 w100">
-          <option value="module1">Module 1</option>
-          <option value="module2">Module 2</option>
+<div data-info="{{Presets General Info}}" class="x-flex x-col" id="presets-wrapper-div-{{module_id}}">
+  <header class="x-header" id="presets-header-general" onclick="smoothCollapseDM('presets-group-collapse-{{module_id}}')">General</header>
+  <form class="x-grid t-modern ggc5" id="presets-group-collapse-smp">
+    <div data-info="Preset Name" class="x-flex-item x-col">
+      <label class="x-label" for="preset-name-{{module_id}}">Preset Name</label>
+      <select class="x-select mt5 p4 w100" id="preset-name-{{module_id}}" required></select>
+      <input class="x-input mt5 w100 d-none" id="preset-name-new-{{module_id}}" type="text"/>
+    </div>
+    <div data-info="Preset Category" class="x-flex-item x-col">
+      <label class="x-label" for="preset-category-{{module_id}}">Category</label>
+      <select class="x-select mt5 p4 w100" id="preset-category-{{module_id}}" data-list="preset-category-list-{{module_id}}"></select>
+    </div>
+    <div data-info="Preset Subcategory" class="x-flex-item x-col">
+      <label class="x-label" for="preset-subcategory-{{module_id}}">Subcategory</label>
+      <select class="x-select mt5 p4 w100" id="preset-subcategory-{{module_id}}" data-list="preset-subcategory-list-{{module_id}}"></select>
+    </div>
+    <div data-info="Preset Module" class="x-flex-item x-col">
+      <label class="x-label" for="preset-module-{{module_id}}">Modules</label>
+      <select class="x-select mt5 p4 w100" id="preset-module-{{module_id}}" data-list="preset-module-list-{{module_id}}">
+        <option value="module1">Module 1</option>
           <option value="module3">Module 3</option>
-        </select>
-      </div>
-      <div class="opsx-flex-item x-col">
-        <label for="preset_plugin_dm" class="opsx-label">Plugins</label>
-        <select id="preset_plugin_dm" data-name="preset_plugin_dm" data-list="preset_plugin_list_dm" class="opsx-select mt5 p4 w100"></select>
-      </div>
-      <div class="opsx-flex-item x-col">
-        <label for="preset_library_dm" class="opsx-label">Libraries</label>
-        <select id="preset_library_dm" data-name="preset_library_dm" data-list="preset_library_list_dm" class="opsx-select mt5 p4 w100"></select>
-      </div>
-      <div class="opsx-flex-item x-col">
-        <label for="preset_workbook_dm" class="opsx-label">Workbook</label>
-        <input type="text" id="preset_workbook_dm" data-name="preset_workbook_dm" class="opsx-input mt5 p5 w100" required>
-      </div>
-      <div class="opsx-flex-item x-col">
-        <label for="preset_sheet_dm" class="opsx-label">Sheet</label>
-        <input type="text" id="preset_sheet_dm" data-name="preset_sheet_dm" class="opsx-input mt5 p5 w100" required>
-      </div>
-      <div class="opsx-flex-item x-col">
-        <label for="preset_sheet_id_dm" class="opsx-label">SheetID</label>
-        <input type="text" id="preset_sheet_id_dm" data-name="preset_sheet_id_dm" class="opsx-input mt5 p5 w100" required>
-      </div>
-      <div class="opsx-flex-item x-col">
-        <label for="preset_script_id_dm" class="opsx-label">ScriptID</label>
-        <select id="preset_script_id_dm" data-name="preset_script_id_dm" data-list="preset_script_id_list_dm" class="opsx-select mt5 p4 w100" required></select>
-      </div>
-      <div class="opsx-flex-item x-col">
-        <label for="preset_last_saved_dm" class="opsx-label">Last Saved</label>
-        <input type="date" id="preset_last_saved_dm" data-name="preset_last_saved_dm" class="opsx-input mt5 p4 w100" required>
-      </div>
-      <div class="opsx-flex-item x-col">
-        <label for="preset_notes_dm" class="opsx-label">Notes</label>
-        <input type="text" id="preset_notes_dm" data-name="preset_notes_dm" class="opsx-input mt5 p5 w100" required>
-    
-      </div>
-    </form>
-  </div>
+      </select>
+    </div>
+    <div data-info="Plugin Name" class="x-flex-item x-col">
+      <label class="x-label" for="preset-plugin-{{module_id}}">Plugins</label>
+      <select class="x-select mt5 p4 w100" id="preset-plugin-{{module_id}}" data-list="preset-plugin-list-{{module_id}}"></select>
+    </div>
+    <div data-info="Library Name" class="x-flex-item x-col">
+      <label class="x-label" for="preset-library-{{module_id}}">Libraries</label>
+      <select class="x-select mt5 p4 w100" id="preset-library-{{module_id}}" data-list="preset-library-list-{{module_id}}"></select>
+    </div>
+    <div data-info="Workbook Name" class="x-flex-item x-col">
+      <label class="x-label" for="preset-workbook-{{module_id}}">Workbook</label>
+      <input class="x-input mt5 p4 w100" id="preset-workbook-{{module_id}}" type="text">
+    </div>
+    <div data-info="Sheet Name" class="x-flex-item x-col">
+      <label class="x-label" for="preset-sheet-{{module_id}}">Sheet</label>
+      <input class="x-input mt5 p4 w100" id="preset-sheet-{{module_id}}" type="text">
+    </div>
+    <div data-info="Google Sheets ID" class="x-flex-item x-col">
+      <label class="x-label" for="preset-sheet-id-{{module_id}}">SheetID</label>
+      <input class="x-input mt5 p4 w100" id="preset-sheet-id-{{module_id}}" type="text">
+    </div>
+    <div data-info="Google App Script ID" class="x-flex-item x-col">
+      <label class="x-label" for="preset-script-id-{{module_id}}">ScriptID</label>
+      <select class="x-select mt5 p4 w100" id="preset-script-id-{{module_id}}" data-list="preset-script-id-list-{{module_id}}"></select>
+    </div>
+    <div data-info="Preset Last Saved Date" class="x-flex-item x-col">
+      <label class="x-label" for="preset-last-saved-{{module_id}}">Last Saved</label>
+      <input class="x-input mt5 p4 w100" id="preset-last-saved-{{module_id}}" type="date">
+    </div>
+    <div data-info="Preset Note" class="x-flex-item x-col">
+      <label class="x-label" for="preset-notes-{{module_id}}">Notes</label>
+      <textarea class="x-input mt5 p4 w100" id="preset-notes-{{module_id}}"></textarea>
+    </div>
+  </form>
+</div>
+
+<script id="opsx-utility-scr-{{module_id}}">
+function opsxSmoothCollapseDM(groupId, displayType = 'grid') {
+  const group = document.getElementById(groupId);
+
+  if (group) {
+    const isExpanded = group.classList.contains('x-expand');
+    group.setAttribute('aria-hidden', isExpanded);
+    group.previousElementSibling.setAttribute('aria-expanded', !isExpanded);
+
+    if (isExpanded) {
+      group.classList.remove('x-expand');
+      group.classList.add('x-collapse');
+      setTimeout(() => {
+        group.style.display = 'none';
+      }, 2300);
+    } else {
+      group.style.display = displayType;
+      setTimeout(() => {
+        group.classList.remove('x-collapse');
+        group.classList.add('x-expand');
+      }, 10);
+    }
+  }
+}
+</script>
+
 </body>
 </html>

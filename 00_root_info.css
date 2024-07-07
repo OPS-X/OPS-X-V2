@@ -1,0 +1,48 @@
+
+/* OPS-X ROOT STYLING */
+
+/* general
+
+- explain that these root sheets only contains perfect css and perfect classes (tested), and only those that 
+are used frequently used ---> paramount to keep things light and intuitive ----> will require multiple 
+iterations to figure out final system before expansion can be considered. in the mean time other roots should be 
+created separately and only moved over when tested and used freq.
+
+
+
+/* Filenames 
+
+{category_index}_{category_main}__{category_sub}_{type}_{version_index} 
+
+category_index:  simple index where split groups have the same category index
+category_main:  simple string for quick id
+category_sub: more specific description of category (root ---> layout)
+type : one single letter or concat of these three types:  d: declaration (rootvar) ,  a: assigment (rootvar) , c: classes 
+version_index:  001 to 999
+
+
+Utility Scripts 
+
+-constant builder
+
+Template.html
+
+- bp html
+- explain dynamic cs loader 
+
+
+
+*/
+
+
+
+
+
+
+
+
+/* OPS-X  DESIGN - MASTER */
+
+
+/* OPS-X REGULAR */
+

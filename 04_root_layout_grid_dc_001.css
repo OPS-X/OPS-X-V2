@@ -1,0 +1,87 @@
+/* ROOT DECLARATIONS DISPLAY : GRID */
+:root {
+    --grid-min-width: 135px; 
+    --grid-max-width: 1fr;  
+    --grid-cols-default: repeat(auto-fit, minmax(var(--grid-min-width), var(--grid-max-width)));
+    --grid-cols-400: repeat(2, 1fr);
+    --grid-cols-600: repeat(4, 1fr);
+    --grid-cols-800: repeat(4, 1fr);
+    --grid-cols-1000: repeat(6, 1fr);
+}
+
+/* MAIN GRID CLASS */
+.x-grid { display: grid; grid-template-columns: var(--grid-cols-default); }
+
+@media (min-width: 400px) { :root { --grid-cols-default: var(--grid-cols-400); } }
+@media (min-width: 600px) { :root { --grid-cols-default: var(--grid-cols-600); } }
+@media (min-width: 800px) { :root { --grid-cols-default: var(--grid-cols-800); } }
+@media (min-width: 1000px) { :root { --grid-cols-default: var(--grid-cols-1000); } }
+
+/* Column utility classes to override the defaults above in case we need very specific setups */
+.col1 { grid-template-columns: repeat(1, 1fr); }
+.col2 { grid-template-columns: repeat(2, 1fr); }
+.col3 { grid-template-columns: repeat(3, 1fr); }
+.col4 { grid-template-columns: repeat(4, 1fr); }
+.col5 { grid-template-columns: repeat(5, 1fr); }
+.col6 { grid-template-columns: repeat(6, 1fr); }
+.col7 { grid-template-columns: repeat(7, 1fr); }
+.col8 { grid-template-columns: repeat(8, 1fr); }
+.col9 { grid-template-columns: repeat(9, 1fr); }
+.col10 { grid-template-columns: repeat(10, 1fr); }
+
+/* Row utility classes */
+.row1 { grid-template-rows: repeat(1, 1fr); }
+.row2 { grid-template-rows: repeat(2, 1fr); }
+.row3 { grid-template-rows: repeat(3, 1fr); }
+.row4 { grid-template-rows: repeat(4, 1fr); }
+.row5 { grid-template-rows: repeat(5, 1fr); }
+.row6 { grid-template-rows: repeat(6, 1fr); }
+.row7 { grid-template-rows: repeat(7, 1fr); }
+.row8 { grid-template-rows: repeat(8, 1fr); }
+.row9 { grid-template-rows: repeat(9, 1fr); }
+.row10 { grid-template-rows: repeat(10, 1fr); }
+
+/* Column span utility classes */
+.csp1 { grid-column: span 1; }
+.csp2 { grid-column: span 2; }
+.csp3 { grid-column: span 3; }
+.csp4 { grid-column: span 4; }
+.csp5 { grid-column: span 5; }
+.csp6 { grid-column: span 6; }
+.csp7 { grid-column: span 7; }
+.csp8 { grid-column: span 8; }
+.csp9 { grid-column: span 9; }
+.csp10 { grid-column: span 10; }
+
+/* Row span utility classes */
+.rsp1 { grid-row: span 1; }
+.rsp2 { grid-row: span 2; }
+.rsp3 { grid-row: span 3; }
+.rsp4 { grid-row: span 4; }
+.rsp5 { grid-row: span 5; }
+.rsp6 { grid-row: span 6; }
+.rsp7 { grid-row: span 7; }
+.rsp8 { grid-row: span 8; }
+.rsp9 { grid-row: span 9; }
+.rsp10 { grid-row: span 10; }
+
+/* in case we need justify-items and align-items, have a look at this overview before adding them 
+    https://miro.medium.com/v2/resize:fit:1080/1*y9RuktkbVshp7lmVmZrbeQ.png
+*/
+
+/* Row Gaps */
+.ggr5 { row-gap: 5px; }
+.ggr10 { row-gap: 10px; }
+.ggr15 { row-gap: 15px; }
+.ggr20 { row-gap: 20px; }
+
+/* Column Gaps */
+.ggc5 { column-gap: 5px; }
+.ggc10 { column-gap: 10px; }
+.ggc15 { column-gap: 15px; }
+.ggc20 { column-gap: 20px; }
+
+/* Grid Auto-Flow Directions */
+.gaf-r { grid-auto-flow: row; }
+.gaf-c { grid-auto-flow: column; }
+.gaf-d { grid-auto-flow: dense; }

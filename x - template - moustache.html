@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="module" content="{{module_name}}">
+<meta name="ModuleID" content="{{module_id}}">
+<meta name="suffixElementID" content="{{module_id}}">
+<meta name="suffixFunction" content="{{MODULE_ID}}">
+<meta name="suffixConstant" content="{{MODULE_ID}}">
+
+<title>OPSX MODULE - {{module name}}</title>
+
+<!-- FONTS -->
+
+<!-- {{ GOOGLE FONTS       }} -->
+
+<!-- {{ ADOBE FONTS        }} -->
+<!-- {{ WEB FONTS          }} -->
+
+<!-- EXTERNAL LIBRARIES-->
+
+<!-- {{ JQUERY             }} -->
+<!-- {{ FIREBASE           }} -->
+<!-- {{ ACE EDITOR         }} -->
+<!-- {{ TABULATOR          }} -->
+<!-- {{ JSTREE             }} -->
+<!-- {{ SELECT2            }} -->
+<!-- {{ PDF EXPORT         }} -->
+<!-- {{ CSS BEAUTIFIER     }} -->
+
+<!-- INTERNAL LIBRARIES-->
+
+<!-- {{OPSX LIB FUNC       }} -->
+<!-- {{ OPSX ROOT SYSTEM   }} -->
+
+<!-- ICON BUTTONS-->
+
+  
+<script id="opsx-css-loader-scr-{{module_id}}">
+const cssFiles = [
+  "01_root_css_reset",
+  "02_root_design_master_color_palette_da",
+  "02_root_design_master_element_mapping_da",
+  "03_root_elements_basic_a",
+  "03_root_elements_structural_da",
+  "04_root_layout_flex_dc",
+  "04_root_layout_grid_dc",
+  "04_root_layout_utility_c",
+  "05_root_components_c",
+  "06_root_transitions_c",
+  "06_root_transitions_d",
+  "07_root_typography_c"
+];
+        
+const pathLocal = ''; /* to enter local relative path like '../OPS-X-V2/'*/
+const pathCDN = 'https://cdn.jsdelivr.net/gh/OPS-X/OPS-X-V2@main/';
+
+function logStylesheetLoadingStart() {
+const timestamp = new Date().toLocaleTimeString('en-US', { hour12: false });
+      
+console.log(
+`OPSX-STYLESHEET LOADER 
+Process Flow:
+1. check for local stylesheets: if true = load stylesheets & exit, if false =
+2. check cache for stylesheets
+3. check cdn for stylesheets
+4. determine latest version via incremental logic
+5. compare cache version with cdn
+6. If cdn = newer version = update cache`);
+
+console.table({
+  "Start Time": timestamp,
+  "Local Path Relative": pathLocal,
+  "CDN Path": pathCDN,
+  "Total stylesheets": cssFiles.length,
+});
+}        
+
+function parseVersion(filename) {
+const match = filename.match(/_(\d{3})\.css$/);
+return match ? match[1] : '001';
+}
+
+function generateNextVersion(currentVersion) {
+return (currentVersion + 1).toString().padStart(3, '0');
+}
+
+async function loadLatestCSS(file) {
+const storageKey = `${file}_version`;
+let version = localStorage.getItem(storageKey) || '001';
+let localAvailable = false;
+let cdnLoaded = false;
+let cacheUpdated = false;
+let operationsLog = [];
+
+const localFilePath = `${pathLocal}${file}_${version}.css`;
+
+// ACTIVATE TO SEE EXACT FILENAME CHECK (LOCAL)
+//console.log(`Checking local availability for: ${localFilePath}`);
+
+// Try loading local file first
+  if (await tryLoadCSS(`${pathLocal}${file}_${version}.css`)) {
+    operationsLog.push(`${timestamp()} ${file}: Loaded local version ${version}`);
+    localAvailable = true;
+  } else {
+
+  operationsLog.push(`${timestamp()} ${file}: Local version unavailable, starting CDN fallback`);
+
+  let latestVersion = version;
+  let attempts = 0;
+
+  while (attempts < 10) {
+    try {
+      const response = await fetch(`${pathCDN}${file}_${version}.css`);
+      if (response.ok) {
+        operationsLog.push(`${timestamp()} ${file}: Successfully loaded CDN version ${version}`);
+        latestVersion = version;
+        version = generateNextVersion(parseVersion(version));
+        attempts++;
+        cdnLoaded = true;
+      } else {
+        operationsLog.push(`${timestamp()} ${file}: CDN version ${version} not found, stopping search`);
+        break;
+      }
+    } catch (error) {
+      operationsLog.push(`${timestamp()} ${file}: Error loading CDN version ${version}: ${error}`);
+      break;
+    }
+  }
+
+  if (latestVersion !== localStorage.getItem(storageKey)) {
+    operationsLog.push(`${timestamp()} ${file}: Updating cache with new version ${latestVersion}`);
+    localStorage.setItem(storageKey, latestVersion);
+    cacheUpdated = true;
+  }
+
+  loadCSS(`${pathCDN}${file}_${latestVersion}.css`);
+  operationsLog.push(`${timestamp()} ${file}: Loaded latest CDN version ${latestVersion}`);
+}
+
+return { file, localAvailable, cdnLoaded, cacheUpdated, version: parseVersion(version).toString().padStart(3, '0'), operationsLog };
+}
+
+
+async function tryLoadCSS(url) {
+// Replace _0.01.css with _001.css in the URL
+url = url.replace(/_0\.01\.css$/, '_001.css');
+try {
+  const response = await fetch(url, { method: 'HEAD' });
+  if (response.ok) {
+    loadCSS(url);
+    return true;
+  }
+} catch (error) {
+  console.error(`${timestamp()} Error trying to load ${url}: ${error}`);
+}
+return false;
+}
+
+function loadCSS(url) {
+const link = document.createElement('link');
+link.rel = 'stylesheet';
+link.href = url;
+document.head.appendChild(link);
+}
+
+function timestamp() {
+return new Date().toLocaleTimeString('en-US', { hour12: false });
+}
+
+logStylesheetLoadingStart();
+
+// Load all CSS files and collect results
+Promise.all(cssFiles.map(loadLatestCSS))
+.then(results => {
+  console.groupCollapsed(`${timestamp()} CSS Loading Operations`);
+  results.forEach(result => {
+    console.log(`File: ${result.file}`);
+    console.log(`Operations:`);
+    result.operationsLog.forEach(log => console.log(`  ${log}`));
+    console.log('');
+  });
+  console.groupEnd();
+
+  console.table(results, ['file', 'localAvailable', 'cdnLoaded', 'cacheUpdated', 'version']);
+});
+</script> 
+
+<style id="opsx-css-{{module_section}}_{{module_id}}">
+</style>
+
+</head>
+<body>
+<div data-info="{{Presets General Info}}" class="x-flex x-col" id="presets-wrapper-div-{{module_id}}">
+  <header class="x-header" id="presets-header-general" onclick="opsxSmoothCollapseDM('presets-group-collapse-{{module_id}}')">General</header>
+  <form class="x-grid t-modern ggc5" id="presets-group-collapse-smp">
+    <div data-info="Preset Name" class="x-flex-item x-col">
+      <label class="x-label" for="preset-name-{{module_id}}">Preset Name</label>
+      <select class="x-select mt5 p4 w100" id="preset-name-{{module_id}}" required></select>
+      <input class="x-input mt5 w100 d-none" id="preset-name-new-{{module_id}}" type="text"/>
+    </div>
+    <div data-info="Preset Category" class="x-flex-item x-col">
+      <label class="x-label" for="preset-category-{{module_id}}">Category</label>
+      <select class="x-select mt5 p4 w100" id="preset-category-{{module_id}}" data-list="preset-category-list-{{module_id}}"></select>
+    </div>
+    <div data-info="Preset Subcategory" class="x-flex-item x-col">
+      <label class="x-label" for="preset-subcategory-{{module_id}}">Subcategory</label>
+      <select class="x-select mt5 p4 w100" id="preset-subcategory-{{module_id}}" data-list="preset-subcategory-list-{{module_id}}"></select>
+    </div>
+    <div data-info="Preset Module" class="x-flex-item x-col">
+      <label class="x-label" for="preset-module-{{module_id}}">Modules</label>
+      <select class="x-select mt5 p4 w100" id="preset-module-{{module_id}}" data-list="preset-module-list-{{module_id}}">
+        <option value="module1">Module 1</option>
+          <option value="module3">Module 3</option>
+      </select>
+    </div>
+    <div data-info="Plugin Name" class="x-flex-item x-col">
+      <label class="x-label" for="preset-plugin-{{module_id}}">Plugins</label>
+      <select class="x-select mt5 p4 w100" id="preset-plugin-{{module_id}}" data-list="preset-plugin-list-{{module_id}}"></select>
+    </div>
+    <div data-info="Library Name" class="x-flex-item x-col">
+      <label class="x-label" for="preset-library-{{module_id}}">Libraries</label>
+      <select class="x-select mt5 p4 w100" id="preset-library-{{module_id}}" data-list="preset-library-list-{{module_id}}"></select>
+    </div>
+    <div data-info="Workbook Name" class="x-flex-item x-col">
+      <label class="x-label" for="preset-workbook-{{module_id}}">Workbook</label>
+      <input class="x-input mt5 p4 w100" id="preset-workbook-{{module_id}}" type="text">
+    </div>
+    <div data-info="Sheet Name" class="x-flex-item x-col">
+      <label class="x-label" for="preset-sheet-{{module_id}}">Sheet</label>
+      <input class="x-input mt5 p4 w100" id="preset-sheet-{{module_id}}" type="text">
+    </div>
+    <div data-info="Google Sheets ID" class="x-flex-item x-col">
+      <label class="x-label" for="preset-sheet-id-{{module_id}}">SheetID</label>
+      <input class="x-input mt5 p4 w100" id="preset-sheet-id-{{module_id}}" type="text">
+    </div>
+    <div data-info="Google App Script ID" class="x-flex-item x-col">
+      <label class="x-label" for="preset-script-id-{{module_id}}">ScriptID</label>
+      <select class="x-select mt5 p4 w100" id="preset-script-id-{{module_id}}" data-list="preset-script-id-list-{{module_id}}"></select>
+    </div>
+    <div data-info="Preset Last Saved Date" class="x-flex-item x-col">
+      <label class="x-label" for="preset-last-saved-{{module_id}}">Last Saved</label>
+      <input class="x-input mt5 p4 w100" id="preset-last-saved-{{module_id}}" type="date">
+    </div>
+    <div data-info="Preset Note" class="x-flex-item x-col">
+      <label class="x-label" for="preset-notes-{{module_id}}">Notes</label>
+      <textarea class="x-input mt5 p4 w100" id="preset-notes-{{module_id}}"></textarea>
+    </div>
+  </form>
+</div>
+
+<!-- INCLUDES GAS -->
+
+<script id="opsx-utility-scr-{{module_id}}">
+function opsxSmoothCollapseDM(groupId, displayType = 'grid') {
+  const group = document.getElementById(groupId);
+
+  if (group) {
+    const isExpanded = group.classList.contains('x-expand');
+    group.setAttribute('aria-hidden', isExpanded);
+    group.previousElementSibling.setAttribute('aria-expanded', !isExpanded);
+
+    if (isExpanded) {
+      group.classList.remove('x-expand');
+      group.classList.add('x-collapse');
+      setTimeout(() => {
+        group.style.display = 'none';
+      }, 2300);
+    } else {
+      group.style.display = displayType;
+      setTimeout(() => {
+        group.classList.remove('x-collapse');
+        group.classList.add('x-expand');
+      }, 10);
+    }
+  }
+}
+</script>
+
+</body>
+</html>

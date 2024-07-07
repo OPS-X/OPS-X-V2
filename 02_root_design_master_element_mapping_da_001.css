@@ -1,0 +1,41 @@
+/* STYLESHEET FOR OPSX - DESIGN SYSTEM LEVEL 1 - ELEMENT MAPPING */
+
+/* group 1 : structural selectors */
+
+/* group 1 : (parts of) element(s) / components of which identical css properties + values results in a predictable/consistent aesthically pleasing design 
+
+elements: a) input, select, textarea, ul, li  -  css properties: color, background-color, font-size, border 
+          b) buttons, icon-button   - css properties : color, border, border-radius
+          c) main, body, section, container - css properties : background - color shading dark to light + contrast plays of dark light,  darker, lighter 
+          d) label, header - display fonts, italic, uppercase, letter spacing, color (darker or brighter than elements nearby
+          e) ace editor, computer components, tabulator : code font
+          f)     
+*/
+
+/* group 2 : non standard css properties or effects + values that will result in a similar outcome as above 
+
+  clip path : container, section, 
+  gradient-bg-mix: main, section, container 
+  hover-scale : buttons, icon-btn, tooltip 
+  hover-dimmed-to-light:  textarea, select, input 
+  smooth-collapse-expand (+ sound) :  container, textarea, section, main 
+  hover-bright-font-color:  li, label, header 
+  hover-sound: li, icon-btn 
+  slide-in: modal dialog, ul, header 
+
+/* group 3 - color pairs */
+
+/* if x element = x color then y element has y color
+
+
+/* group 4 - randomization properties
+
+  mutually exclusive : background-color and color (pick one)
+  gradient and background images  (dont mix)
+
+  medium sized elements = great candidates for background images - though only simple ones 
+
+*/
+
+
+

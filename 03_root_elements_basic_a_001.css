@@ -1,0 +1,20 @@
+/* STYLESHEET FOR ASSIGNMENT OF ROOT VARIABLES FOR REGULAR ELEMENTS */
+
+/* main usage is to provide basic styling when no component or utility classes are added in the markup */
+
+header {
+  font-size: var(--header-font-size);
+}
+
+.header-sub {
+  font-size: var(--header-sub-font-size);
+}
+
+p {
+  font-size: var(--paragraph-font-size);
+}
+
+label {
+  font-size: var(--label-font-size);
+  color: var(--main-color);
+}

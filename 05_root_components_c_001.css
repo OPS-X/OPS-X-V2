@@ -1,0 +1,56 @@
+/* x-css-boilerplate-component-classes + responsiveness @media */
+.x-label {
+color: var(--second-color); 
+font-size: var(--label-font-size);
+align-items: center;
+margin-top: 5px;
+}
+
+/* Header Styles */
+.x-header {
+font-family: var(--font-test);
+font-size: var(--header-font-size);
+text-transform: uppercase;
+display: flex;
+align-items: center;
+letter-spacing: 0.5px;
+font-style: italic;
+color: gold;
+cursor: pointer;
+}
+
+.x-flex {
+  display: flex;
+}
+
+.x-flex-item {
+ display: flex;
+}
+
+/* Input And Select Styles */
+.x-input, .x-select {
+/* Typography Properties */
+font-family: var(--font-test);
+font-size: var(--font-size-base);
+
+/* COLOR & APPEARANCE */
+background-color: var(--black-color); 
+color: grey;
+border: 1px solid #333;
+outline: none;
+
+/* TRANSITION AND EFFECTS */
+transition: color 0.5s ease, border-color 0.3s ease, background-color 0.3s ease;
+
+}
+.x-input:hover, .x-select:hover {
+color: var(--smooth-trans-color);
+border-color: var(--smooth-trans-hover-border-color);
+background-color: var(--smooth-trans-hover-bg-color);
+}
+/* Checkbox Styles */
+.x-checkbox {
+accent-color: var(--accent-color);
+width: 15px;
+border-radius: 0;
+}

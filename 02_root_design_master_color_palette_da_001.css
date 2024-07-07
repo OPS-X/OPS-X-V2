@@ -1,0 +1,55 @@
+/* STYLESHEET FOR OPSX - DESIGN SYSTEM LEVEL 1 - COLOR PALETTE - FONTS */
+
+:root {
+    /* ROOT FONT SIZE SCALER */
+    --global-font-size-scale-ratio: 0.8;
+
+    /* ROOT VAR DECLARATION : FONT */
+    --font-base: 'Montserrat', sans-serif;
+    --font-code: 'Roboto Mono', monospace;
+    --font-custom: 'Orbitron', sans-serif;
+    --font-test: 'Goldman', sans-serif;
+
+    /* Responsive font size using clamp() and calc() */
+    --font-size-base: calc(clamp(14px, 1.25vw, 20px) * var(--global-font-size-scale-ratio));
+     
+    /* ROOT FONT SIZE RATIOS */ 
+    --body-font-size-ratio: 1; 
+    --header-font-size-ratio: 1.5;
+    --header-sub-font-size-ratio: 1.25;
+    --paragraph-font-size-ratio: 1;
+    --label-font-size-ratio: 0.875;
+
+    /* ROOT FONT SIZE PER ELEMENT */
+    --body-font-size: calc(var(--font-size-base) * var(--body-font-size-ratio));
+    --header-font-size: calc(var(--font-size-base) * var(--header-font-size-ratio));
+    --header-sub-font-size: calc(var(--font-size-base) * var(--header-sub-font-size-ratio));
+    --paragraph-font-size: calc(var(--font-size-base) * var(--paragraph-font-size-ratio));
+    --label-font-size: calc(var(--font-size-base) * var(--label-font-size-ratio));
+   
+
+    /* ROOT VAR DECLARATION: STYLE SYSTEM - COLOR PALETTE */
+    --main-color: darkblue;
+    --second-color: darkgrey;
+    --third-color: #1A1A1A;
+    --fourth-color: black;
+  
+    /* ROOT VAR DECLARATION: EXTRA COLORS */
+    --text-color: #000; /* change this to body-font-color later on for consistency */
+    --custom-color-1: "";
+    --custom-color-2: "";
+    --custom-color-3: "";
+    --custom-color-4: "";
+    --black-color: #000;
+    --white-color: #ecf0f1;
+    --transparent-color: transparent;
+    --contrasting-color: black;
+    --active-color: #8dd78d;
+    --accent-color: #00f;
+    --disabled-color: lightgrey;
+}
+
+
+
+
+  

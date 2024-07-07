@@ -1,0 +1,7 @@
+.t-modern {
+    font-family: var(--font-test);
+    font-size: 10px; 
+    font-style: italic;
+    text-transform: uppercase; 
+    letter-spacing: 0.5px;
+}

@@ -1,0 +1,10 @@
+ /* ROOT VAR DECLARATION : TRANSITIONS */
+
+:root {
+ --smooth-collapse: opacity 0.5s ease-in-out, max-height 1.5s ease-in-out 0.5s;
+--smooth-expand: max-height 1.5s ease-in-out, opacity 0.5s ease-in-out 1.5s;
+--smooth-trans-hover-bo-bg-config1: border-color 0.3s ease, background-color 0.3s ease;
+--smooth-trans-color: lightgrey;
+--smooth-trans-bg-color: #111;
+--smooth-trans-hover-border-color: #007bff;
+}
